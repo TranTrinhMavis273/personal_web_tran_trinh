@@ -23,3 +23,13 @@ Spotlight entrance, and used Next Image in the Cult image component.
 The official shadcn skill comes from `shadcn-ui/ui`, path `skills/shadcn`.
 The Deep Ocean skill is project-authored from the user's specification and UI
 library choices; it is not an official skill from those libraries.
+
+Full UI pass: added shadcn Field, Sheet, Select, Toggle Group, Separator, Alert,
+Empty, Skeleton and Table. Form controls were sized consistently, imports mapped
+to the local utilities, and semantic light/dark variants retained.
+
+Fontsource supplies bundled Plus Jakarta Sans / JetBrains Mono. `next-themes`
+handles system preference, persisted theme selection and hydration-safe initialization.
+`simple-icons` supplies Python, n8n, PostgreSQL, Next.js and Supabase logo paths.
+Licenses remain in their installed npm packages; the source decorative compositions
+are authored for this project and do not include paid templates.

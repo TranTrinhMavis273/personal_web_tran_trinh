@@ -4,21 +4,32 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-45 [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-deepsea text-cream hover:bg-deepsea-hover",
-        outline: "border border-steel-border bg-transparent text-cream hover:bg-steel-surface",
+        default:
+          "bg-primary text-primary-foreground shadow-sm hover:bg-deepsea-hover hover:shadow-md",
+        outline: "border border-border bg-transparent text-foreground hover:bg-accent",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-accent",
+        ghost: "text-foreground hover:bg-accent",
         destructive: "bg-lobster text-cream hover:bg-lobster-hover",
+        link: "text-brand-ink underline-offset-4 hover:underline",
       },
-      size: { default: "h-10 px-4 py-2", sm: "h-9 px-3", icon: "h-10 w-10" },
+      size: {
+        default: "h-11 px-5 py-2",
+        sm: "h-9 px-3 text-xs",
+        lg: "h-12 px-6",
+        icon: "size-11",
+        "icon-sm": "size-9",
+      },
     },
     defaultVariants: { variant: "default", size: "default" },
   },
 );
 
-export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants> & { asChild?: boolean };
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonVariants> & { asChild?: boolean };
 
 export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
   const Component = asChild ? Slot : "button";

@@ -1,60 +1,94 @@
-# Tech PM Portfolio & CMS
+# Tran Trinh — Tech PM Portfolio & CMS
 
-Nền tảng Next.js 15 App Router, React 19, TypeScript, Tailwind CSS 4.
-Tài liệu đặc tả: `tai_lieu_ky_thuat_va_quy_trinh_vibe_code_tech_pm.md`.
+Next.js 15 App Router · React 19 · TypeScript · Tailwind CSS 4.
+Giao diện được triển khai từ bộ wireframe Figma trong thư mục `design/`.
 
-## Chạy cục bộ
+## Chạy dự án
 
-Yêu cầu Node.js 22 hoặc 24 và npm.
+Yêu cầu Node.js 22.6+ hoặc Node.js 24 và npm.
 
 ```powershell
 npm ci
-Copy-Item .env.example .env.local
+# Chỉ tạo file nếu chưa có .env.local; không ghi đè cấu hình đang dùng.
+if (-not (Test-Path .env.local)) { Copy-Item .env.example .env.local }
 npm run dev
 ```
 
-Mở http://localhost:3000. Trang khởi tạo chạy được khi chưa có API key.
-Các chức năng CMS, auth và gửi email chưa được triển khai ở giai đoạn khởi tạo.
+Mặc định mở http://localhost:3000. Có thể chọn cổng khác khi cổng này đang bận:
 
 ```powershell
+npm run dev -- --port 3001
+```
+
+Dev dùng `.next-dev`, production dùng `.next` để các bản build không ghi đè nhau.
+
+```powershell
+npm test
 npm run lint
 npm run typecheck
 npm run build
 npm start
 ```
 
-## Công cụ và thư viện
+## Giao diện đã triển khai
 
-- UI: Lucide, Framer Motion, Radix Slot, shadcn configuration, Sonner.
-- Forms: React Hook Form, Zod, Hook Form Resolvers, Cloudflare Turnstile React.
-- Nội dung: React Markdown, Remark GFM, Rehype Highlight, Mermaid, Recharts.
-- Backend: Supabase JS/SSR, Resend; Supabase CLI qua `npx supabase`.
-- Theo dõi khi triển khai: Vercel Analytics và Speed Insights.
+| Nhóm | Đường dẫn | Tương tác |
+| --- | --- | --- |
+| Trang chủ | `/` | Hero, dự án nổi bật, năng lực, quy trình, bài viết, CTA |
+| Dự án | `/projects`, `/projects/[slug]` | Tìm kiếm, lọc lĩnh vực/năng lực, kiến trúc Mermaid, metrics, RAID log |
+| Bài viết | `/articles`, `/articles/[slug]` | Lọc chuyên mục, tìm kiếm, Markdown, mục lục, tiến độ đọc, sao chép liên kết |
+| Hồ sơ | `/about`, `/resume` | Thông tin cá nhân, trạng thái kinh nghiệm/chứng chỉ, xem/tải PDF khi có tệp |
+| Liên hệ | `/contact` | Zod validation, trạng thái gửi/lỗi, Turnstile khi được cấu hình |
+| CMS | `/admin/login`, `/admin/dashboard` | Login UI, không gian xem thử, thống kê nội dung |
+| Quản lý nội dung | `/admin/projects`, `/admin/articles` | Tìm, lọc, sửa, ẩn/xuất bản xem thử và xác nhận xóa |
+| Biên tập | `/admin/projects/new`, `/admin/projects/[id]`, `/admin/articles/new`, `/admin/articles/[id]` | Lưu nháp, preview, editor Mermaid/Markdown, ảnh, chỉ số, rủi ro |
+| Hộp thư | `/admin/inquiries` | Tìm, lọc, đọc và đổi New / Contacted / Archived |
+| Hồ sơ quản trị | `/admin/profile` | Chỉnh hồ sơ, chọn PDF, khôi phục dữ liệu xem thử |
+| UI kit | `/design-system` | Component, hiệu ứng và các trạng thái giao diện |
 
-Aceternity/Magic UI và các component shadcn sẽ được thêm theo từng tính năng,
-không cài toàn bộ component không sử dụng. Tailwind 4 dùng design tokens trong
-`app/globals.css` thay cho cấu hình Tailwind 3 trong tài liệu gốc.
+Hai theme theo hệ thống, có thể chọn sáng/tối và ghi nhớ lựa chọn. Font được đóng
+gói cục bộ: Plus Jakarta Sans và JetBrains Mono. Icon Lucide và logo Simple Icons.
+Kính mờ dùng backdrop blur; spotlight, dot texture, orbital rings và Border Beam
+được tiết chế và tôn trọng tùy chọn giảm chuyển động.
 
-## Design workflow
+## Phạm vi dữ liệu và dịch vụ
 
-Trang `/design-system` minh họa Spotlight, Dot Pattern, Border Beam, Marquee,
-Cult Minimal Card, tabs và tương tác nghiêng thẻ tự viết lấy cảm hứng Hover.dev.
-Các component đã tải nằm trong `components/ui`; registry nằm trong `components.json`.
-Nguồn và thay đổi được ghi tại `docs/ui-sources.md`.
+Giai đoạn này triển khai **giao diện**, chưa triển khai CMS production.
 
-Skill chính thức shadcn và skill thiết kế riêng Deep Ocean được cài theo phạm vi
-dự án trong `.agents/skills`. `AGENTS.md` hướng dẫn áp dụng khi phát triển giao diện.
-Skill mới có thể được khám phá tự động từ lượt chat tiếp theo.
+- Dự án/bài viết và hộp thư khởi tạo là dữ liệu minh họa, có nhãn rõ ràng.
+- Chế độ xem thử CMS lưu vào localStorage của trình duyệt. Xuất bản ở đây chỉ
+  thay đổi bản xem thử trên cùng trình duyệt/origin, không ghi Supabase.
+- Đăng nhập và Magic Link hiện thông báo chưa kết nối xác thực. CMS preview không
+  chứa dữ liệu riêng tư từ cloud và không giả lập một phiên đăng nhập thành công.
+- Ảnh chân dung do chủ website cung cấp được dùng ở trang chủ và Giới thiệu.
+- Kinh nghiệm, chứng chỉ và số liệu chưa xác nhận không được bịa ra.
+- CV tải được sau khi chọn PDF và lưu hồ sơ trong chế độ xem thử.
+- Contact API có validation phía server, honeypot, Turnstile, Supabase insert và
+  thông báo Resend. Khi thiếu cấu hình, API từ chối bằng 503; không báo gửi thành công.
+- Chưa kiểm thử gửi email thật hoặc ghi dữ liệu cloud vì hiện chưa có credentials.
 
-## Thiết lập dịch vụ ở bước tiếp theo
+### Kết nối production ở bước tiếp theo
 
-1. Tạo Supabase project; điền URL và anon/publishable key vào `.env.local`.
-2. Thiết kế migration từ schema tài liệu, giới hạn quyền admin theo chủ sở hữu;
-   không chạy nguyên các policy cấp quyền cho mọi authenticated user.
-3. Tắt public signup nếu chỉ chủ website được đăng nhập; cấu hình redirect URLs.
-4. Tạo Resend API key, xác minh domain gửi và điền email nhận thông báo.
-5. Tạo Turnstile site key/secret cho localhost và domain thật.
-6. Kết nối GitHub/Vercel và cấu hình các biến môi trường khi triển khai.
+1. Tạo migration/RLS Supabase giới hạn đúng chủ website; không dùng nguyên policy
+   `authenticated USING (true)` trong tài liệu mẫu.
+2. Nối repository dữ liệu và các thao tác CMS tới Supabase; thêm route guard và
+   kiểm tra quyền ở từng Server Action/API trước khi mở dữ liệu cloud.
+3. Cấu hình URL/anon key Supabase, Resend API key/domain gửi/email nhận và Turnstile
+   site key/secret trong `.env.local` hoặc môi trường Vercel.
+4. Nhập nội dung thật, CV và ảnh chân dung rồi kiểm thử end-to-end trên dịch vụ thật.
+5. Kết nối Vercel và domain khi sẵn sàng triển khai.
 
-Không commit `.env.local` hoặc đưa secret key vào biến `NEXT_PUBLIC_*`.
-Không cần Supabase Docker local nếu sử dụng Supabase cloud.
+Không commit `.env.local` hoặc đặt secret trong biến `NEXT_PUBLIC_*`.
+
+## Thiết kế và quy tắc dự án
+
+- `design/WIREFRAMES.md`: nhóm trang, Figma và nguồn vector.
+- `design/VISUAL-DIRECTION.md`: theme, icon và hiệu ứng.
+- `docs/ui-sources.md`: nguồn component và các điều chỉnh.
+- `docs/IMPLEMENTATION.md`: cấu trúc mã và giới hạn triển khai.
+- `.agents/skills/shadcn` và `.agents/skills/deep-ocean-portfolio`: skill theo dự án.
+
+## Deploy thử
+
+Xem [hướng dẫn Vercel](docs/DEPLOYMENT.md). Cấu hình Node.js 24.x và build đã được chuẩn bị.
+Bản UI có thể build khi chưa cấu hình dịch vụ cloud.
