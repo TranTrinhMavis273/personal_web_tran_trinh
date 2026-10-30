@@ -1,0 +1,72 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-steel-marine: #0a0a3a;
+  --color-steel-surface: #10104a;
+  --color-steel-border: #1c1c66;
+  --color-deepsea: #05308c;
+  --color-deepsea-hover: #0741bd;
+  --color-lobster: #ad1f23;
+  --color-lobster-hover: #cf252a;
+  --color-cream: #fefdf8;
+  --color-cream-muted: #d1d0ca;
+  --color-background: #0a0a3a;
+  --color-foreground: #fefdf8;
+  --color-primary: #05308c;
+  --color-primary-foreground: #fefdf8;
+  --color-border: #1c1c66;
+  --color-input: #1c1c66;
+  --color-ring: #05308c;
+  --radius: 0.75rem;
+  --color-card: #10104a;
+  --color-card-foreground: #fefdf8;
+  --color-popover: #10104a;
+  --color-popover-foreground: #fefdf8;
+  --color-muted: #161650;
+  --color-muted-foreground: #d1d0ca;
+  --color-secondary: #1c1c66;
+  --color-secondary-foreground: #fefdf8;
+  --color-accent: #1c1c66;
+  --color-accent-foreground: #fefdf8;
+  --color-destructive: #ad1f23;
+  --animate-spotlight: spotlight 0.35s ease-out forwards;
+}
+
+* { border-color: var(--color-border); }
+@keyframes spotlight {
+  from { opacity: 0; transform: translate(-50%, -40%) scale(0.98); }
+  to { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee, .animate-marquee-vertical { animation: none !important; }
+  .animate-spotlight { animation: none !important; opacity: 1; transform: translate(-50%, -40%); }
+}
+
+body { margin: 0; background: var(--color-background); color: var(--color-foreground); font-family: Arial, Helvetica, sans-serif; }
+::selection { background: var(--color-deepsea); color: var(--color-cream); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+@theme inline {
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+    }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+    }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+}
